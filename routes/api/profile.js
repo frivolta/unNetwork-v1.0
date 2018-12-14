@@ -3,6 +3,8 @@ const router = express.Router();
 const passport = require ('passport');
 //Load validation
 const ValidateProfileInput = require ('../../validation/profile');
+const ValidateExperienceInput = require ('../../validation/experience');
+const ValidateEducationInput = require ('../../validation/education');
 
 //Load Profile Model
 const Profile = require('../../models/Profile');
@@ -139,5 +141,109 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res)=>{
     })
 
 });
+
+// @route   POST api/profile/experience
+// @desc    Add experience to profile
+// @access  Private
+
+router.post('/experience', passport.authenticate('jwt', {session: false}), (req, res)=>{
+  //Validate experience input
+  const  {errors, isValid} = ValidateExperienceInput(req.body);
+  //Check validation
+  if(!isValid){
+    //Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+  //Req.user.id comes from the token
+  Profile.findOne({ user: req.user.id })
+    .then (profile => {
+      const newExp = {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      }
+      //Add to experience array
+      profile.experience.unshift(newExp);
+      profile.save().then(profile=>res.json(profile)).catch(err=>console.log('cannot save: ' + err));
+    })
+});
+
+// @route   POST api/profile/education
+// @desc    Add education to profile
+// @access  Private
+
+router.post('/education', passport.authenticate('jwt', {session: false}), (req, res)=>{
+  //Validate experience input
+  const  {errors, isValid} = ValidateEducationInput(req.body);
+  //Check validation
+  if(!isValid){
+    //Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+  //Req.user.id comes from the token
+  Profile.findOne({ user: req.user.id })
+    .then (profile => {
+      const newEdu = {
+        school: req.body.school,
+        degree: req.body.degree,
+        fieldOfStudy: req.body.fieldOfStudy,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      }
+      //Add to experience array
+      profile.education.unshift(newEdu);
+      profile.save().then(profile=>res.json(profile)).catch(err=>console.log('cannot save: ' + err));
+    })
+});
+
+// @route   DELETE api/profile/experience/:exp_id
+// @desc    Delete experience from profile
+// @access  Private
+router.delete('/experience/:exp_id', passport.authenticate('jwt', {session: false}), (req, res)=>{
+    //Req.user.id comes from the token
+  Profile.findOne({ user: req.user.id })
+    .then (profile => {
+      //Get remove index
+      const removeIndex = profile.experience.map(item=>item.id).indexOf(req.params.exp_id);
+      //Splice out of array
+      profile.experience.splice(removeIndex, 1);
+      profile.save().then(profile=>res.json(profile))
+    })
+    .catch(err=>res.status(404)(err))
+});
+
+// @route   DELETE api/profile/experience/:edu_id
+// @desc    Delete education from profile
+// @access  Private
+router.delete('/education/:edu_id', passport.authenticate('jwt', {session: false}), (req, res)=>{
+    //Req.user.id comes from the token
+  Profile.findOne({ user: req.user.id })
+    .then (profile => {
+      //Get remove index
+      const removeIndex = profile.education.map(item=>item.id).indexOf(req.params.edu_id);
+      //Splice out of array
+      profile.education.splice(removeIndex, 1);
+      profile.save().then(profile=>res.json(profile))
+    })
+    .catch(err=>res.status(404)(err))
+});
+// @route   DELETE api/profile/
+// @desc    Delete user and profile
+// @access  Private
+router.delete('/', passport.authenticate('jwt', {session: false}), (req, res)=>{
+   Profile.findOneAndRemove({ user: req.user.id })
+    .then(()=>{
+      User.findOneAndRemove({ _id: req.user.id })
+        .then(()=>res.json({success: true}))
+    })
+});
+
+
 
 module.exports = router;
