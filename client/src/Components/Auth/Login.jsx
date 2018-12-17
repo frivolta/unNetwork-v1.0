@@ -13,7 +13,12 @@ class Login extends Component {
       errors: {}
     }
   }
-
+  componentDidMount(){
+    // Redirect to dashboard if is logged in
+    if(this.props.auth.isAuthenticated){
+      this.props.history.push('/dashboard')
+    }
+  }
   componentWillReceiveProps(nextProps){
     if(nextProps.auth.isAuthenticated){
       this.props.history.push('/dashboard');
