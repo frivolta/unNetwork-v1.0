@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PrivateRoute from './Components/Common/PrivateRoute';
 import { Provider } from 'react-redux';
 // See localstorage for jwt token
 import jwt_decode from 'jwt-decode';
@@ -15,6 +16,7 @@ import Register from './Components/Auth/Register';
 import Login from './Components/Auth/Login';
 import './App.css';
 import Dashboard from './Components/Dashboard/Dashboard';
+import CreateProfile from './Components/CreateProfile/CreateProfile';
 
 // Check for token
 if(localStorage.jwtToken){
@@ -47,7 +49,12 @@ class App extends Component {
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container">
-              <Route exact path="/dashboard" component={Dashboard} />
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/create-profile" component={CreateProfile} />
+              </Switch>
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
             </div>
