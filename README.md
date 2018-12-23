@@ -6,82 +6,45 @@ MERN Stack (React, Express, Mongo, Node) simple Social Network. Connect develope
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
+This is a production ready version for Heroku. To start and run locally:
 
 ```
-Give the example
+  npm run client-install
+  npm install
+  npm run dev
 ```
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+Be sure to setup your Mongo DB and setup a keys_dev.js file like keys.example.js with your dev credentials and jwt secret.
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+To deploy your app to heroku setup your MONGO_URI and SECRET_OR_KEY in development variables and deploy to Heroku with Heroku CLI
 
-## Built With
+End with an example of getting some data out of the system or using it for a little demo
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
-## Contributing
+### Functionalities 
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+* User auth with Passport JWT
+* User can manage Bio, Experiences and Education
+* User can Post, Like and see other user feeds'
 
-## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+## @ToDO
+
+* Add a server side controller and break down router js files
+* Change promises into async await
+* Add ES6 Babel support to server side
+* Make a Digital Ocean production ready version
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Filippo Rivolta** - *Initial work* 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+This project is licensed under the MIT License
